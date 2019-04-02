@@ -36,11 +36,14 @@
 - Scalable: Bazel can handle large builds; at Google, it is common for a server binary to have 100k source files, and builds where no files were changed take about ~200ms.
 
 ### 3. Framework/libraries
-- The framework for Tensorflow is known for having an architecture that allows computation on any CPU or GPU, be it a desktop, a server, or even a mobile device. This framework is available in the Python programming language. The advantage of using this framwork is 1. Uses an easy-to-learn a language (Python);2. Uses computational graph abstraction;3. Availability of TensorBoard for visualization.
+- The framework for Tensorflow is known for having an architecture that allows computation on any CPU or GPU, be it a desktop, a server, or even a mobile device. This framework is available in the Python programming language. The advantage of using this framwork is: 
+1. Uses an easy-to-learn a language (Python);
+2. Uses computational graph abstraction;
+3. Availability of TensorBoard for visualization.
 
 
 
 Reference:
-https://www.wired.com/2015/11/google-open-sources-its-artificial-intelligence-engine/
-https://www.quora.com/Why-did-Google-decide-to-use-Bazel-with-TensorFlow
-https://bazel.build/faq.html#what-is-special-about-bazel
+- https://www.wired.com/2015/11/google-open-sources-its-artificial-intelligence-engine/
+- https://www.quora.com/Why-did-Google-decide-to-use-Bazel-with-TensorFlow
+- https://bazel.build/faq.html#what-is-special-about-bazel

@@ -1,4 +1,4 @@
-# Case-study: TensorFlow (by Leyang Shen)
+# Case-study: TensorFlow (by Leyang Shen) Updated 4.3 working on architecture and demo...
 ## Technology and Platform used for development:
 ### 1. Language: 
 - Tensorflow itself is a deep learning engine open sourced by Google. It was built with the C++ programming language. But in developing applications for this AI engine, coders can use either C++ or Python, the most popular language among deep learning researchers. The hope, however, is that outsiders will expand the tool to other languages, including Google Go, Java, and perhaps even Javascript, so that coders have more ways of building apps. In my opinion, I would choose to use Python for Tensorflow if starting today. Becuase Python is more acceptable and popular and much easier to comprehend nowadays. As Python is covered in most technology fields, I think it would also be easier to integrate different development tools if Tensorflow was built in Python.
@@ -41,9 +41,37 @@
 2. Uses computational graph abstraction;
 3. Availability of TensorBoard for visualization.
 
+- Tensorflow itself is a library for machine learning and data science applications. These are libraries that can be put to use in a multitude of applications, including natural language processing / NLP (tensorflow), visualization and analysis of complex data (therano), image recognition (caffe) and prediction and recommendation. But there are more [Library & extensions](https://www.tensorflow.org/resources/libraries-extensions) of Tensorflow available.
 
+## Testing
+- The project runs builds and tests on either [Jenkins](https://jenkins.io/) or a CI (Continuous Integration) system internal to Google. The builds and tests will be triggered on each pull request and then it will show if the change passes or fails the checks.
+
+- There is code coverage on changed file after each commit.
+
+- Results from Jenkins are displayed in the Jenkins UI. For more information, see the [Jenkins documentation](https://jenkins.io/doc/).
+
+- Results from the internal CI system are displayed in the Build Status UI. In this UI, to see the logs for a failed build:
+
+1. Click on the **INVOCATION LOG** tab to see the invocation log.
+
+2. Click on the **ARTIFACTS** tab to see a list of all artifacts, including logs.
+
+3. Individual test logs may be available. To see these logs, from the **TARGETS** tab, click on the failed target. Then, click on the **TARGET** LOG tab to see its test log.
+<img src="./CI_test_sample.png">
+- Most computing platform combinations can be tested, such as Windows 10, Linux, Mac and so on.
+
+## Software Architecture
+- It is possible to build or edit functionality in Tensorflow. We can actually avoid needingto run configure script with having a bazelrc file with the necessary options in our primary project. Users can apply Tensorflow to their project by simply installing as a external library. 
+<img src="./general_arch.png">
+- While training replication between graphs, mutiple clients take part in replication. Each machine has a client which talks to the local master and gives cluster information, graphs and data to be executed. Master ensures that PS tasks are shared based on cluster and schedules tasks in local worker • Worker ensures all communication and synchronizations. Between Graphs Replication can be of two types: Synchronous and Asynchronous.
+
+- Tensorflow is more of a functional component for most machine learning projects. By its powerful ability of implementing algorithms, users can focus on the overall logic of the application. 
+
+
+## Defects
 
 Reference:
 - https://www.wired.com/2015/11/google-open-sources-its-artificial-intelligence-engine/
 - https://www.quora.com/Why-did-Google-decide-to-use-Bazel-with-TensorFlow
 - https://bazel.build/faq.html#what-is-special-about-bazel
+- https://www.tensorflow.org/guide/extend/architecture

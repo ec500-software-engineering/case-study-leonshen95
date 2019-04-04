@@ -1,4 +1,4 @@
-# Case-study: TensorFlow (by Leyang Shen) Updated 4.3 working on architecture and demo...
+# Case-study: TensorFlow (by Leyang Shen) Updated 4.3 working on defect and demo...
 ## Technology and Platform used for development:
 ### 1. Language: 
 - Tensorflow itself is a deep learning engine open sourced by Google. It was built with the C++ programming language. But in developing applications for this AI engine, coders can use either C++ or Python, the most popular language among deep learning researchers. The hope, however, is that outsiders will expand the tool to other languages, including Google Go, Java, and perhaps even Javascript, so that coders have more ways of building apps. In my opinion, I would choose to use Python for Tensorflow if starting today. Becuase Python is more acceptable and popular and much easier to comprehend nowadays. As Python is covered in most technology fields, I think it would also be easier to integrate different development tools if Tensorflow was built in Python.
@@ -58,19 +58,42 @@
 
 3. Individual test logs may be available. To see these logs, from the **TARGETS** tab, click on the failed target. Then, click on the **TARGET** LOG tab to see its test log.
 <img src="./CI_test_sample.png">
+
 - Most computing platform combinations can be tested, such as Windows 10, Linux, Mac and so on.
 
 ## Software Architecture
-- It is possible to build or edit functionality in Tensorflow. We can actually avoid needingto run configure script with having a bazelrc file with the necessary options in our primary project. Users can apply Tensorflow to their project by simply installing as a external library. 
+- It is possible to build or edit functionality in Tensorflow. We can actually avoid needing to run configure script with having a bazelrc file with the necessary options in our primary project. Users can apply Tensorflow to their project by simply installing as a external library. 
+
 <img src="./general_arch.png">
-- While training replication between graphs, mutiple clients take part in replication. Each machine has a client which talks to the local master and gives cluster information, graphs and data to be executed. Master ensures that PS tasks are shared based on cluster and schedules tasks in local worker • Worker ensures all communication and synchronizations. Between Graphs Replication can be of two types: Synchronous and Asynchronous.
+
+- The graph below illustrates the interaction of these components.  "/job:worker/task:0" and "/job:ps/task:0" are both tasks with worker services. "PS" stands for "parameter server": a task responsible for storing and updating the model's parameters. Other tasks send updates to these parameters as they work on optimizing the parameters. This particular division of labor between tasks is not required, but is common for distributed training. The client has built a graph that applies weights (w) to a feature vector (x), adds a bias term (b) and saves the result in a variable (s).
+
+<img src="./components_interact.png">
+
+- After running, the computation from client will be sent to the Master. The distributed master has grouped the model parameters in order to place them together on the parameter server. Then the master will insert send and receive nodes to pass information between the distributed tasks. And the computation graph will be sent over.
+
+- The worker service end for each task will:
+1. handle requests from the master,
+2. schedule the execution of the kernels for the operations that comprise a local subgraph
+3. mediates direct communication between tasks.
+
+<img src="./Distributed_system.png">
+**  Red dot represents sending and yellow dot represents receving.
+
+- While training replication between graphs, mutiple clients take part in replication. Each machine has a client which talks to the local master and gives cluster information, graphs and data to be executed. Master ensures that PS tasks are shared based on cluster and schedules tasks in local worker. Worker ensures all communication and synchronizations. Between Graphs Replication can be of two types: Synchronous and Asynchronous.
+
+- Asynchronous:
+
+<img src="./async_data_parallelism.png">
 
 - Tensorflow is more of a functional component for most machine learning projects. By its powerful ability of implementing algorithms, users can focus on the overall logic of the application. 
 
 
 ## Defects
 
-Reference:
+## Demonstration
+
+### Reference:
 - https://www.wired.com/2015/11/google-open-sources-its-artificial-intelligence-engine/
 - https://www.quora.com/Why-did-Google-decide-to-use-Bazel-with-TensorFlow
 - https://bazel.build/faq.html#what-is-special-about-bazel

@@ -1,4 +1,4 @@
-# Case-study: TensorFlow (by Leyang Shen) Updated 4.3 working on defect and demo...
+# Case-study: TensorFlow (by Leyang Shen) 
 ## Technology and Platform used for development:
 ### 1. Language: 
 - Tensorflow itself is a deep learning engine open sourced by Google. It was built with the C++ programming language. But in developing applications for this AI engine, coders can use either C++ or Python, the most popular language among deep learning researchers. The hope, however, is that outsiders will expand the tool to other languages, including Google Go, Java, and perhaps even Javascript, so that coders have more ways of building apps. In my opinion, I would choose to use Python for Tensorflow if starting today. Becuase Python is more acceptable and popular and much easier to comprehend nowadays. As Python is covered in most technology fields, I think it would also be easier to integrate different development tools if Tensorflow was built in Python.
@@ -70,7 +70,7 @@
 
 <img src="./components_interact.png">
 
-- After running, the computation from client will be sent to the Master. The distributed master has grouped the model parameters in order to place them together on the parameter server. Then the master will insert send and receive nodes to pass information between the distributed tasks. And the computation graph will be sent over.
+- After running, the computation from client will be sent to the Master. The distributed master has grouped the model parameters in order to place them together on the parameter server. Then the master will insert send and receive nodes to pass information between the distributed tasks. And the computational graph will be sent over.
 
 - The worker service end for each task will:
 1. handle requests from the master,
@@ -91,7 +91,15 @@
 
 ## Defects
 
+1. There was no official unpooling layer. So we have to use image resize (bilinear interpolation or nearest neighbor). Tensorflow has a maxpooling_with_argmax thing where you get you maxpooled output as well as the activation map which is nice as we could use it in an unpooling layer to preserve the 'lost' spacial information but it seems as there isn't such an unpooling operation that does it. As [ISSUE #2169](https://github.com/tensorflow/tensorflow/issues/2169) stated, unpool serve to resize features map after it have been pooled by tf.nn.max_pool_with_argmax. The max indices are then used to map the resizing. The other pixels are left at 0. Only the place where the max appeared during the max_pooling will be filled.It would be good to add a tf.nn.max_unpool_with_argmax function and documentation.
+
+<img src=https://user-images.githubusercontent.com/10159876/36239559-fdd4b1e6-124d-11e8-8f55-adf9463491bc.png>
+
+2. Because the implementation of computational graph is written in Python, it would be a lot slower than in C++. In TensorFlow you define graph statically before a model can run. All communication with outer world is performed via tf.Session object and tf.Placeholder which are tensors that will be substituted by external data at runtime. And because of the static graphs, it usually means we need to compile first then we can run. 
+
 ## Demonstration
+
+- Please see Demo folder for detail.
 
 ### Reference:
 - https://www.wired.com/2015/11/google-open-sources-its-artificial-intelligence-engine/
